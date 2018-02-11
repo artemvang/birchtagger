@@ -2,7 +2,7 @@ def test_tagger(tagger, tokenizer):
     sample_text = ('Секретарша (Петрова-Водкина) ставила '
                    'сургучные- печати на пакет, '
                    'посетители ожидали своей очереди, '
-                   'радио играло сентиментальный вальс...')
+                   'радио играло сентиментальный python вальс...')
 
     tokens, _ = tokenizer(sample_text)
     tags = (t.name for t in tagger.tag(tokens))
@@ -26,6 +26,7 @@ def test_tagger(tagger, tokenizer):
                                        ('радио', 'NOUN'),
                                        ('играло', 'VERB'),
                                        ('сентиментальный', 'ADJ'),
+                                       ('python', 'NOUN'),
                                        ('вальс', 'NOUN'),
                                        ('.', 'PUNCT'),
                                        ('.', 'PUNCT'),
