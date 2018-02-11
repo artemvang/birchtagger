@@ -1,1 +1,2 @@
-from .tagger import POSTagger
+from .pos_tagger import POSTagger
+from .schemes import POSTag
