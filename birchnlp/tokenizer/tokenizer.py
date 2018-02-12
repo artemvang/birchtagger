@@ -86,7 +86,10 @@ def prepare_token(token: str, config) -> t.List[str]:
     return tokenized
 
 
-def get_tokenizer(config=TokenizingConfig()) -> t.Callable:
+def get_tokenizer(config: TokenizingConfig=None) -> t.Callable:
+    if config is None:
+        config = TokenizingConfig()
+
     def tokenize_text(text: str) -> t.Tuple[t.List[str], t.List[bool]]:
 
         key2equation = {}
