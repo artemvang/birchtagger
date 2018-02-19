@@ -91,6 +91,8 @@ def get_tokenizer(config: TokenizingConfig=None) -> t.Callable:
         config = TokenizingConfig()
 
     def tokenize_text(text: str) -> t.Tuple[t.List[str], t.List[bool]]:
+        if not text.strip():
+            return [], []
 
         key2equation = {}
         if config.TOKENS_RE:
