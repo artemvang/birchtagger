@@ -49,3 +49,9 @@ def test_tokenize(tokenizer):
     # Test text restoring
     assert ''.join([f'{t}{" " * int(s)}'
                    for t, s in zip(tokens, spaces)]) == sample_text
+
+
+def test_empty_text(tokenizer):
+    tokens, spaces = tokenizer('    ')
+    assert tokens == []
+    assert spaces == []
