@@ -1,1 +1,1 @@
-reqursive-include birchnlp/pos_tagger/weights
+recursive-include birchnlp/pos_tagger/weights *

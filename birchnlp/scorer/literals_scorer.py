@@ -81,6 +81,6 @@ class LiteralScorer:
         total_tokens_count = len(list(tokens_freqs.elements()))
         for token, token_freq in tokens_freqs.items():
             token_scores[token] = (
-                token_freq + tokens_degree[token]) / total_tokens_count
+                token_freq + tokens_degree[token]) / token_freq
 
         return token_scores

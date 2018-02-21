@@ -5,6 +5,7 @@ from birchnlp.tokenizer.config import TokenizingConfig
 from birchnlp.pos_tagger import POSTagger
 from birchnlp.pattern_matcher import PatternMatcher
 from birchnlp.schemes import Token
+from birchnlp.utils import get_stem_func
 
 
 BirchType = t.TypeVar("BirchType", bound="Birch")
@@ -14,17 +15,18 @@ class Birch:
 
     tokens = None
 
-    def __init__(self, text: str, tok_config: TokenizingConfig=None):
+    def __init__(self, text: str, tok_config: TokenizingConfig=None,
+                 tagger=POSTagger(), stemmer=get_stem_func()):
         tokenize = get_tokenizer(tok_config)
-        tagger = POSTagger()
 
         tokens, spaces = tokenize(text)
+        stems = [stemmer(tok.lower()) for tok in tokens]
         tags = tagger.tag(tokens)
 
         self.tokens = []
         offset = 0
-        for tok, tag, space in zip(tokens, tags, spaces):
-            token = Token(tok, tag, space, offset)
+        for tok, tag, stem, space in zip(tokens, tags, stems, spaces):
+            token = Token(tok, tag, stem, space, offset)
             self.tokens.append(token)
             offset += len(tok) + int(space)
 
@@ -74,6 +76,19 @@ class Birch:
                 matches.append(Birch.build_from_tokens(sent[start: fin]))
 
         return matches
+
+    def __hash__(self):
+        return hash(*self.tokens)
+
+    def __eq__(self, doc2):
+        return (hash(self) == hash(doc2) and
+                len(self) == len(doc2) and
+                all(t1 == t2 for t1, t2 in zip(self, doc)))
+
+    def __ne__(self, doc2):
+        return (hash(self) != hash(doc2) or
+                len(self) != len(doc2) or
+                any(t1 != t2 for t1, t2 in zip(self, doc)))
 
     def __repr__(self):
         return str(self)

@@ -10,7 +10,7 @@ requirements = [
 
 setup(
     name="birchnlp",
-    verson="0.1.0",
+    version="0.1.0",
     description="NLP swiss army knife for russian language",
     install_requires=requirements,
     packages=find_packages('.', exclude='tests'),

@@ -3,12 +3,12 @@ import os
 import sys
 import itertools
 
-import Stemmer as stemmer
 import xxhash
 import numpy as np
 import scipy.sparse as sprs
 
 from birchnlp.pos_tagger.schemes import POSTag
+from birchnlp.utils import get_stem_func
 
 END_TOKEN = "$END$"
 START_TOKEN = "$START$"
@@ -38,7 +38,7 @@ class POSTagger(object):
     def __init__(self, data_dir=DATA_DIR):
         self.coef_, self.intercept_ = self._load_weights(data_dir)
 
-        self.stemmer = stemmer.Stemmer("russian")
+        self.stemmer = get_stem_func()
 
     def _load_weights(self, data_dir):
         coef = sprs.load_npz(os.path.join(data_dir, COEF_FILE))
@@ -67,7 +67,7 @@ class POSTagger(object):
                 yield PREFIX_FEATURE_PATTERN.format(i, word[:c])
 
             if len(word) >= MIN_WORD_LEN:
-                word = self.stemmer.stemWord(word)
+                word = self.stemmer(word)
 
             yield WORD_FEATURE_PATTERN.format(i, word)
 
