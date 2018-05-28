@@ -21,14 +21,19 @@ class Birch:
 
         tokens, spaces = tokenize(text)
         stems = [stemmer(tok.lower()) for tok in tokens]
-        tags = tagger.tag(tokens)
+        if tagger:
+            tags = tagger.tag(tokens)
+        else:
+            tags = [None] * len(tokens)
 
         self.tokens = []
         offset = 0
+        tok_pos = 0
         for tok, tag, stem, space in zip(tokens, tags, stems, spaces):
-            token = Token(tok, tag, stem, space, offset)
+            token = Token(tok, tag, stem, space, offset, tok_pos)
             self.tokens.append(token)
             offset += len(tok) + int(space)
+            tok_pos += 1
 
         self.sentences_offsets_ = get_sentences_offsets(self.tokens)
 
@@ -101,8 +106,14 @@ class Birch:
 def get_sentences_offsets(tokens: t.List[Token]) -> t.List[int]:
     sentences_offsets = []
 
+    find_line_break = False
     for i, tok in enumerate(tokens):
         if tok.token in '.!?' and tok.space:
             sentences_offsets.append(i + 1)
+        elif tok.token == '\n':
+            find_line_break = True
+        elif find_line_break:
+            sentences_offsets.append(i)
+            find_line_break = False
 
     return sentences_offsets

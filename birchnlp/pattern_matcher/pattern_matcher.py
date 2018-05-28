@@ -35,7 +35,7 @@ class PatternMatcher:
             best_match = self.extract_best_match(words[counter:])
             if best_match != 0:
                 coords.append((counter, counter + best_match))
-            counter += max(best_match, 1)
+            counter += 1
 
         return coords
 
@@ -60,6 +60,8 @@ class PatternMatcher:
                         trans_state = state.transitions[trans]
                         self.addstate(trans_state, next_states)
 
+            if not next_states:
+                break
             current_states = next_states
 
             for state in current_states:

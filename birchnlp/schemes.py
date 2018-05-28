@@ -5,17 +5,22 @@ from birchnlp.pos_tagger.schemes import POSTag
 class Token:
 
     def __init__(self, token: str, pos: POSTag, stem: str,
-                 space: bool, start: int):
+                 space: bool, start: int, tok_pos: int):
         self.token = token
         self.pos = pos
         self.stem = stem
         self.space = space
         self.start = start
         self.end = start + len(token)
+        self.tok_pos = tok_pos
         self._hash = hash(token)
 
     def __copy__(self):
-        return Token(self.token, self.pos, self.stem, self.space, self.start)
+        return Token(self.token, self.pos, self.stem,
+                     self.space, self.start, self.tok_pos)
+
+    def __len__(self):
+        return len(self.token)
 
     def __hash__(self):
         return self._hash
