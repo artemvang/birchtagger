@@ -83,7 +83,7 @@ class Birch:
         return matches
 
     def __hash__(self):
-        return hash(*self.tokens)
+        return hash(tuple(self.tokens))
 
     def __eq__(self, doc2):
         return (hash(self) == hash(doc2) and
