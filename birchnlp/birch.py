@@ -88,7 +88,7 @@ class Birch:
     def __eq__(self, doc2):
         return (hash(self) == hash(doc2) and
                 len(self) == len(doc2) and
-                all(t1 == t2 for t1, t2 in zip(self, doc)))
+                all(t1 == t2 for t1, t2 in zip(self, doc2)))
 
     def __ne__(self, doc2):
         return (hash(self) != hash(doc2) or
