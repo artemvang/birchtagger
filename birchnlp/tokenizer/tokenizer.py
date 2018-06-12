@@ -33,10 +33,12 @@ def tokenize(sentence: str, key2equation: t.Dict[str, str],
             sub_tokens = prepare_token(tok, config)
             tokenized += sub_tokens
             spaces += [False] * len(sub_tokens)
-        spaces[-1] = True
+        if spaces:
+            spaces[-1] = True
 
     words = [key2equation.get(word, word) for word in tokenized]
-    spaces[-1] = False
+    if spaces:
+        spaces[-1] = False
     return words, spaces
 
 
